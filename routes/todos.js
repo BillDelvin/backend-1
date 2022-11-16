@@ -1,28 +1,25 @@
+// File ini digunakan untuk membuat API method bersama controller
 const express = require("express");
 const router = express();
 
-// file ini digunakan untuk membuat HTTPs method untuk API
+let listMahasiswa = [];
 
-// for create
 router.post("/todos", (req, res) => {
-  console.log(req.body);
+  listMahasiswa = [...listMahasiswa, { id: Math.random(), ...req.body }];
 
-  //   console.log(req.query);
-
-  // jika aku sudah berhasil insert record
-
-  return res.status(200).json({
-    message: "User berhasil di tambah!!",
-    data: {
-      title: "this is from req.query",
-      value: req.query,
-    },
-  });
+  return res.status(200).json({ message: "Berhasil menambahkan user!" });
 });
 
-// for update
-router.post("/todos/:id", (req, res) => {
-  console.log(req.params);
+router.get("/todos", (req, res) => {
+  return res.status(200).json({ value: listMahasiswa });
+});
+
+router.delete("/todos/:id", (req, res) => {
+  const { id } = req.params;
+  const findIndex = listMahasiswa.findIndex((val) => val.id === id);
+  listMahasiswa.splice(findIndex, 1);
+
+  return res.status(200).json({ message: "Berhasil menghapus mahasiswa!" });
 });
 
 module.exports = router;
